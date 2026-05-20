@@ -1,0 +1,40 @@
+{
+    "images": [
+        {
+            "id": 1,
+            "src": "https://api.bdcallingacademy.com/images/1738658513.jpg",
+            "alt": "Gallery Image 1"
+        },
+        {
+            "id": 2,
+            "src": "https://api.bdcallingacademy.com/images/1738658997.jpg",
+            "alt": "Gallery Image 2"
+        },
+        {
+            "id": 3,
+            "src": "https://api.bdcallingacademy.com/images/1738658986.jpg",
+            "alt": "Gallery Image 3"
+        },
+        {
+            "id": 4,
+            "src": "https://api.bdcallingacademy.com/images/1738658971.jpg",
+            "alt": "Gallery Image 4"
+        },
+        {
+            "id": 5,
+            "src": "https://api.bdcallingacademy.com/images/1738658941.jpg",
+            "alt": "Gallery Image 5"
+        },
+        {
+            "id": 6,
+            "src": "https://api.bdcallingacademy.com/images/1738658915.jpg",
+            "alt": "Gallery Image 6"
+        },
+        {
+            "id": 7,
+            "src": "https://api.bdcallingacademy.com/images/1738658893.jpg",
+            "alt": "Gallery Image 6"
+        }
+    ]
+}
+

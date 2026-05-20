@@ -1,0 +1,523 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600&display=swap');
+
+@import "tailwindcss";
+
+/* ========================================
+   IELTS ONLINE EXAM PLATFORM - DESIGN SYSTEM
+   ======================================== */
+
+/* Google Fonts Import */
+
+/* ========== FONT CLASSES ========== */
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+
+.work {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 400;
+}
+
+.outfit {
+  font-family: "Outfit", sans-serif;
+  font-weight: 800;
+}
+
+.outfit-semibold {
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+}
+
+/* ========== COLOR CLASSES ========== */
+/* Primary Colors */
+.cpr { color: #f79952; }          /* Orange - Accent */
+.csd { color: #41bfb8; }          /* Teal - Primary */
+.crd { color: #414042; }          /* Dark Gray - Text */
+.tw { color: white; }
+
+/* Text Colors */
+.text-cpr { color: #f79952; }
+.text-csd { color: #41bfb8; }
+.text-ielts-dark { color: #1a1a2e; }
+.text-ielts-gray { color: #6b7280; }
+
+/* Background Colors */
+.bg-cpr { background-color: #f79952; }
+.bg-csd { background-color: #41bfb8; }
+.bg-ielts-dark { background-color: #1a1a2e; }
+.bg-ielts-light { background-color: #f8fafc; }
+
+/* Border Colors */
+.border-cpr { border-color: #f79952; }
+.border-csd { border-color: #41bfb8; }
+
+/* ========== GRADIENTS ========== */
+.btn-gradient {
+  background: linear-gradient(135deg, #41bfb8 0%, #2d9a94 100%);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #38a8a1 0%, #268a84 100%);
+}
+
+.btn-gradient-orange {
+  background: linear-gradient(135deg, #f79952 0%, #e87d32 100%);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.card-gradient {
+  background: linear-gradient(180deg, rgba(65, 191, 184, 0.1) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+/* Animated Gradient Background */
+.animated-bg {
+  background: linear-gradient(270deg, #f79952, #41bfb8, #f79952);
+  background-size: 600% 600%;
+  animation: gradientMove 20s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ========== IELTS EXAM SPECIFIC STYLES ========== */
+
+/* Exam Timer */
+.exam-timer {
+  font-family: "Inter", monospace;
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  animation: timerPulse 1s ease-in-out infinite;
+}
+
+.exam-timer.warning {
+  animation: timerWarning 0.5s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes timerWarning {
+  0%, 100% { transform: scale(1); background-color: #ef4444; }
+  50% { transform: scale(1.05); background-color: #dc2626; }
+}
+
+/* Question Navigation */
+.question-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.question-nav-btn.unanswered {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.question-nav-btn.answered {
+  background-color: #41bfb8;
+  color: white;
+  border: 2px solid #41bfb8;
+}
+
+.question-nav-btn.current {
+  background-color: #f79952;
+  color: white;
+  border: 2px solid #f79952;
+  transform: scale(1.1);
+}
+
+.question-nav-btn.flagged {
+  background-color: #fef3c7;
+  color: #d97706;
+  border: 2px solid #f59e0b;
+}
+
+/* Band Score Display */
+.band-score-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Outfit", sans-serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: white;
+  position: relative;
+}
+
+.band-score-circle::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #41bfb8, #f79952);
+  z-index: -1;
+}
+
+.band-score-circle.excellent { background: linear-gradient(135deg, #10b981, #059669); }
+.band-score-circle.good { background: linear-gradient(135deg, #41bfb8, #2d9a94); }
+.band-score-circle.average { background: linear-gradient(135deg, #f79952, #e87d32); }
+.band-score-circle.needs-improvement { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+/* Audio Player Styles */
+.audio-player {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.audio-waveform {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.audio-waveform-bar {
+  width: 4px;
+  background: #41bfb8;
+  border-radius: 2px;
+  animation: waveform 1s ease-in-out infinite;
+}
+
+@keyframes waveform {
+  0%, 100% { height: 20%; }
+  50% { height: 100%; }
+}
+
+/* Audio Recorder */
+.recorder-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.recorder-btn.idle {
+  background: linear-gradient(135deg, #41bfb8, #2d9a94);
+}
+
+.recorder-btn.recording {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  animation: recordingPulse 1s ease-in-out infinite;
+}
+
+@keyframes recordingPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #41bfb8, #2d9a94);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Section Cards */
+.section-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.section-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: #41bfb8;
+}
+
+.section-card.listening { border-left: 4px solid #8b5cf6; }
+.section-card.reading { border-left: 4px solid #3b82f6; }
+.section-card.writing { border-left: 4px solid #10b981; }
+.section-card.speaking { border-left: 4px solid #f59e0b; }
+
+/* Reading Passage Split View */
+.reading-split-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  height: calc(100vh - 180px);
+}
+
+.reading-passage {
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: #fefefe;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  line-height: 1.8;
+}
+
+.reading-passage ::selection {
+  background: #fef08a;
+}
+
+.reading-questions {
+  overflow-y: auto;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Writing Editor */
+.writing-editor {
+  min-height: 400px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 16px;
+  line-height: 1.8;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.writing-editor:focus {
+  border-color: #41bfb8;
+}
+
+.word-count {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.word-count.warning { color: #f59e0b; }
+.word-count.success { color: #10b981; }
+
+/* Fullscreen Exam Mode */
+.exam-fullscreen {
+  position: fixed;
+  inset: 0;
+  background: #f8fafc;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Anti-cheat Warning */
+.anti-cheat-warning {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+/* Stats Card */
+.stats-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Pricing Card */
+.pricing-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card.popular {
+  border-color: #41bfb8;
+  transform: scale(1.05);
+}
+
+.pricing-card.popular::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  background: linear-gradient(135deg, #f79952, #e87d32);
+  color: white;
+  padding: 0.25rem 2rem;
+  font-size: 12px;
+  font-weight: 600;
+  transform: rotate(45deg);
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+.animate-flip {
+  animation: flip 0.3s ease-in-out;
+}
+
+@keyframes flip {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { transform: translateY(10%); opacity: 0.8; }
+  100% { transform: translateY(0%); opacity: 1; }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Utility Classes */
+.container-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-padding {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-padding {
+    padding-left: 6rem;
+    padding-right: 6rem;
+  }
+}
+
+/* Shadow Utilities */
+.shadow-soft {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-medium {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-strong {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Focus States */
+.focus-ring:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #41bfb8;
+  ring-offset: 2px;
+}

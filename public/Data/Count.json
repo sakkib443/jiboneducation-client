@@ -1,0 +1,38 @@
+[
+    {
+        "count": 3800,
+        "label": "Successful Students",
+        "icon": "FaUserGraduate",
+        "suffix": "+"
+    },
+    {
+        "count": 2000,
+        "label": "Expert Freelancers",
+        "icon": "FaLaptopCode",
+        "suffix": "+"
+    },
+    {
+        "count": 1350,
+        "label": "Skilled Job Holders",
+        "icon": "FaBriefcase",
+        "suffix": "+"
+    },
+    {
+        "count": 600,
+        "label": "Industry Expert",
+        "icon": "HiOutlineUserGroup",
+        "suffix": "+"
+    },
+    {
+        "count": 92,
+        "label": "Success Ratio",
+        "icon": "FaChartLine",
+        "suffix": "%"
+    },
+    {
+        "count": 10,
+        "label": "Companies",
+        "icon": "FaBuilding",
+        "suffix": "+"
+    }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "All"
+  },
+  {
+    "id": 2,
+    "name": "Art & Design"
+  },
+  {
+    "id": 3,
+    "name": "Programming"
+  },
+  {
+    "id": 11,
+    "name": "Language Skills"
+  },
+
+  {
+    "id": 4,
+    "name": "Digital Marketing"
+  },
+  {
+    "id": 5,
+    "name": "Media & Film"
+  },
+  {
+    "id": 6,
+    "name": "Networking & Server"
+  },
+  {
+    "id": 7,
+    "name": "Management"
+  },
+  {
+    "id": 8,
+    "name": "Database"
+  },
+  {
+    "id": 9,
+    "name": "Diploma"
+  },
+  {
+    "id": 10,
+    "name": "Cybersecurity"
+  }
+]
