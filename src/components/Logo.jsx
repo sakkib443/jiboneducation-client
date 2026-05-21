@@ -4,7 +4,7 @@ export default function Logo({ className = "", size = "default" }) {
     return (
         <div className={`flex items-center ${className}`}>
             <img
-                src="/images/IMG_5177.PNG"
+                src="/images/logo.png"
                 alt="Jibon Education - An English Language Training Centre"
                 className={`${heightClass} object-contain`}
             />

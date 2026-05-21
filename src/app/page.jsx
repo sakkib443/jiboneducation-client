@@ -43,9 +43,9 @@ const ToastPopup = ({ message, type, onClose }) => {
     };
 
     const colors = {
-        error: "from-red-500 to-rose-600",
-        warning: "from-amber-500 to-orange-600",
-        success: "from-green-500 to-emerald-600",
+        error: "bg-red-500",
+        warning: "bg-amber-500",
+        success: "bg-green-500",
     };
 
     return (
@@ -55,7 +55,7 @@ const ToastPopup = ({ message, type, onClose }) => {
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
             className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
         >
-            <div className={`bg-gradient-to-r ${colors[type]} text-white rounded-2xl shadow-2xl overflow-hidden`}>
+            <div className={`${colors[type]} text-white rounded-2xl shadow-2xl overflow-hidden`}>
                 <div className="px-5 py-4 flex items-start gap-4">
                     <div className="flex-shrink-0 w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                         {icons[type]}
@@ -264,9 +264,9 @@ export default function HomePage() {
     };
 
     const examSections = [
-        { name: "Listening", icon: <FaHeadphones />, duration: "30 min", questions: 40, color: "purple" },
-        { name: "Reading", icon: <FaBook />, duration: "60 min", questions: 40, color: "blue" },
-        { name: "Writing", icon: <FaPen />, duration: "60 min", questions: 2, color: "emerald" },
+        { name: "Listening", icon: <FaHeadphones />, duration: "30 min", questions: 40, iconClass: "bg-purple-50 text-purple-500" },
+        { name: "Reading", icon: <FaBook />, duration: "60 min", questions: 40, iconClass: "bg-blue-50 text-blue-500" },
+        { name: "Writing", icon: <FaPen />, duration: "60 min", questions: 2, iconClass: "bg-emerald-50 text-emerald-500" },
     ];
 
     const requirements = [
@@ -359,9 +359,9 @@ export default function HomePage() {
 
             {/* Static Background Blobs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#41bfb8]/10 rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#f79952]/10 rounded-full blur-[100px]"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-[#41bfb8]/5 to-[#f79952]/5 rounded-full blur-[150px]"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#FF6904]/10 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-red-500/10 rounded-full blur-[100px]"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#FF6904]/5 rounded-full blur-[150px]"></div>
 
                 {/* Grid Pattern */}
                 <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -378,11 +378,11 @@ export default function HomePage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="flex items-center justify-between max-w-7xl mx-auto"
                     >
-                        <Logo size="large" />
+                        <Logo size="default" />
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => setShowDemoVideo(true)}
-                                className="relative px-4 py-2.5 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-red-500/40 transition-all cursor-pointer transform hover:-translate-y-0.5 flex items-center gap-2"
+                                className="relative px-4 py-2.5 bg-red-500 text-white rounded-xl font-semibold text-sm hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transition-all cursor-pointer transform hover:-translate-y-0.5 flex items-center gap-2"
                             >
                                 {/* Pulsing glow ring */}
                                 <span className="absolute -inset-1 rounded-2xl bg-red-400 opacity-0 animate-pulse" style={{ animationDuration: '2s' }}></span>
@@ -400,7 +400,7 @@ export default function HomePage() {
                             </div>
                             <button
                                 onClick={() => router.push("/login")}
-                                className="px-5 py-2.5 bg-gradient-to-r from-[#41bfb8] to-[#2d9a94] text-white rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-[#41bfb8]/30 transition-all cursor-pointer transform hover:-translate-y-0.5"
+                                className="px-5 py-2.5 bg-[#FF6904] text-white rounded-xl font-semibold text-sm hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer transform hover:-translate-y-0.5"
                             >
                                 Login
                             </button>
@@ -419,25 +419,25 @@ export default function HomePage() {
                             className="hidden lg:block"
                         >
                             {/* Badge (dynamic) */}
-                            <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-1.5 mb-5">
+                            <div className="inline-flex items-center gap-2 bg-[#FF6904]/10 border border-[#FF6904]/20 rounded-full px-4 py-1.5 mb-5">
                                 <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                                <span className="text-red-600 text-xs font-bold tracking-wider uppercase">{heroBadge}</span>
+                                <span className="text-[#FF6904] text-xs font-bold tracking-wider uppercase">{heroBadge}</span>
                             </div>
 
                             {/* Title 3 lines (dynamic) */}
                             <h2 className="text-4xl font-extrabold text-slate-900 mb-2 outfit leading-tight">
-                                <span className="text-red-600">{heroLine1}</span>
+                                <span className="text-[#FF6904]">{heroLine1}</span>
                                 <br />
                                 {heroLine2}
                                 <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#dc2626] to-[#b91c1c]">
+                                <span className="text-[#dc2626]">
                                     {heroLine3}
                                 </span>
                             </h2>
 
                             {/* Subtitle with **bold** marker support (dynamic) */}
                             <p className="text-slate-600 mb-8 text-lg font-medium leading-relaxed">
-                                {renderBoldMarkers(heroSubtitleRaw, "span", "text-red-600 font-bold")}
+                                {renderBoldMarkers(heroSubtitleRaw, "span", "text-[#FF6904] font-bold")}
                             </p>
 
                             {/* Exam Sections Preview */}
@@ -450,7 +450,7 @@ export default function HomePage() {
                                         transition={{ delay: 0.3 + index * 0.1 }}
                                         className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
                                     >
-                                        <div className={`w-12 h-12 rounded-xl bg-${section.color}-50 flex items-center justify-center text-${section.color}-500 text-xl`}>
+                                        <div className={`w-12 h-12 rounded-xl ${section.iconClass} flex items-center justify-center text-xl`}>
                                             {section.icon}
                                         </div>
                                         <div className="flex-1">
@@ -471,7 +471,7 @@ export default function HomePage() {
                                         transition={{ delay: 0.6 + index * 0.05 }}
                                         className="flex items-center gap-2 text-slate-600 text-sm font-medium"
                                     >
-                                        <span className="text-[#41bfb8]">{req.icon}</span>
+                                        <span className="text-[#FF6904]">{req.icon}</span>
                                         {req.text}
                                     </motion.div>
                                 ))}
@@ -488,8 +488,8 @@ export default function HomePage() {
                             <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 shadow-xl shadow-slate-200/50">
                                 {/* Card Header */}
                                 <div className="text-center mb-8">
-                                    <div className="w-16 h-16 mx-auto mb-4 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-center shadow-sm">
-                                        <HiOutlineDocumentText className="text-red-500 text-3xl" />
+                                    <div className="w-16 h-16 mx-auto mb-4 bg-[#FF6904]/10 border border-[#FF6904]/20 rounded-2xl flex items-center justify-center shadow-sm">
+                                        <HiOutlineDocumentText className="text-[#FF6904] text-3xl" />
                                     </div>
                                     <h3 className="text-2xl font-bold text-slate-900 outfit">Start Your Exam</h3>
                                     <p className="text-slate-500 text-sm mt-2 font-medium">Enter your unique Exam ID to begin</p>
@@ -508,7 +508,7 @@ export default function HomePage() {
                                                     setExamId(e.target.value.toUpperCase());
                                                 }}
                                                 placeholder="e.g., JEIELTS240001"
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-slate-900 placeholder-slate-400 focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 outline-none transition-all text-lg font-mono tracking-widest"
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-slate-900 placeholder-slate-400 focus:border-[#FF6904] focus:bg-white focus:ring-4 focus:ring-[#FF6904]/10 outline-none transition-all text-lg font-mono tracking-widest"
                                                 autoComplete="off"
                                                 spellCheck="false"
                                             />
@@ -524,7 +524,7 @@ export default function HomePage() {
                                                 onChange={(e) => {
                                                     setAgreed(e.target.checked);
                                                 }}
-                                                className="w-5 h-5 rounded border-2 border-slate-300 bg-white checked:bg-red-500 checked:border-red-500 appearance-none cursor-pointer transition-all"
+                                                className="w-5 h-5 rounded border-2 border-slate-300 bg-white checked:bg-[#FF6904] checked:border-[#FF6904] appearance-none cursor-pointer transition-all"
                                             />
                                             {agreed && (
                                                 <FaCheckCircle className="absolute inset-0 text-white w-5 h-5 pointer-events-none" />
@@ -539,7 +539,7 @@ export default function HomePage() {
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-red-500/30 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0"
+                                        className="w-full flex items-center justify-center gap-3 bg-[#FF6904] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0"
                                     >
                                         {isLoading ? (
                                             <>
@@ -559,7 +559,7 @@ export default function HomePage() {
                                 {/* Security Note */}
                                 <div className="mt-8 pt-8 border-t border-slate-100">
                                     <div className="flex items-start gap-3 text-slate-500 text-xs leading-relaxed">
-                                        <FaShieldAlt className="text-red-400 mt-0.5 flex-shrink-0" />
+                                        <FaShieldAlt className="text-[#FF6904] mt-0.5 flex-shrink-0" />
                                         <p>
                                             This exam is conducted in a secure environment. Tab switching, screen recording, and copy-paste are monitored.
                                         </p>
@@ -572,12 +572,12 @@ export default function HomePage() {
 
                 {/* Footer */}
                 <footer className="py-8 px-8 border-t border-slate-200 bg-white/50 backdrop-blur-sm">
-                    <div className="max-w-7xl mx-auto flex flex-col md:row items-center justify-between gap-4 text-slate-600 text-sm font-medium">
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-600 text-sm font-medium">
                         <p>© 2026 Jibon Education. All rights reserved.</p>
                         <div className="flex items-center gap-6">
-                            <span className="hover:text-[#41bfb8] cursor-pointer transition-colors">Privacy Policy</span>
-                            <span className="hover:text-[#41bfb8] cursor-pointer transition-colors">Terms of Service</span>
-                            <span className="hover:text-[#41bfb8] cursor-pointer transition-colors">Support</span>
+                            <span className="hover:text-[#FF6904] cursor-pointer transition-colors">Privacy Policy</span>
+                            <span className="hover:text-[#FF6904] cursor-pointer transition-colors">Terms of Service</span>
+                            <span className="hover:text-[#FF6904] cursor-pointer transition-colors">Support</span>
                         </div>
                     </div>
                 </footer>
