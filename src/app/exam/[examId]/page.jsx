@@ -233,16 +233,20 @@ export default function ExamSelectionPage() {
 
 
     const handleStartModule = (moduleId, setNumber) => {
-        // Kick off background prefetch IMMEDIATELY when the instruction video opens.
-        // By the time the user clicks "Skip"/"Continue", the exam data is usually
-        // already cached → the module page can render almost instantly.
-        // This call is fire-and-forget; it never throws.
+        // Kick off background prefetch immediately (fire-and-forget)
         if (setNumber != null) {
             prefetchModule(moduleId, setNumber);
         }
 
-        // Show module-specific instruction video before navigating
-        setShowModuleVideo({ moduleId, setNumber });
+        // Skip instruction video — go directly to module
+        if (setNumber != null) {
+            const sessionData = JSON.parse(localStorage.getItem("examSession") || "{}");
+            sessionData.currentSetNumber = setNumber;
+            sessionData.currentModule = moduleId;
+            localStorage.setItem("examSession", JSON.stringify(sessionData));
+        }
+        setNavigatingTo(MODULE_LABELS[moduleId] || { label: "Preparing exam...", subLabel: "" });
+        router.push(`/exam/${sessionId}/${moduleId}`);
     };
 
     const MODULE_LABELS = {
@@ -371,65 +375,6 @@ export default function ExamSelectionPage() {
                 </div>
             )}
 
-            {/* Module-specific Instruction Video Modal */}
-            {showModuleVideo && (() => {
-                const videoInfo = MODULE_VIDEOS[showModuleVideo.moduleId];
-                return (
-                    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-                        <div className="bg-white rounded-xl w-full max-w-3xl shadow-2xl overflow-hidden">
-                            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200">
-                                <div className="flex items-center gap-2">
-                                    <FaVideo className="text-red-500" />
-                                    <h3 className="font-semibold text-gray-800 text-sm">{videoInfo.label} Instruction</h3>
-                                </div>
-                                <button
-                                    onClick={() => setShowModuleVideo(null)}
-                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-                                >
-                                    <FaTimes />
-                                </button>
-                            </div>
-                            <div className="relative w-full bg-black" style={{ paddingBottom: "56.25%" }}>
-                                {videoInfo.isYT ? (
-                                    <iframe
-                                        className="absolute inset-0 w-full h-full"
-                                        src={videoInfo.src}
-                                        title={`${videoInfo.label} Instruction`}
-                                        frameBorder="0"
-                                        allow="autoplay; encrypted-media"
-                                        allowFullScreen
-                                    />
-                                ) : (
-                                    <video
-                                        className="absolute inset-0 w-full h-full"
-                                        src={videoInfo.src}
-                                        controls
-                                        autoPlay
-                                        playsInline
-                                    />
-                                )}
-                            </div>
-                            <div className="px-5 py-3 bg-gray-50 flex items-center justify-between">
-                                <p className="text-gray-500 text-xs">Watch the {videoInfo.label.toLowerCase()} instruction before starting</p>
-                                <div className="flex items-center gap-2">
-                                    <button
-                                        onClick={proceedToModule}
-                                        className="px-4 py-1.5 bg-white text-gray-700 border border-gray-300 text-xs font-medium rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
-                                    >
-                                        Skip
-                                    </button>
-                                    <button
-                                        onClick={proceedToModule}
-                                        className="px-4 py-1.5 bg-red-600 text-white text-xs font-medium rounded-md hover:bg-red-700 transition-colors flex items-center gap-1.5 cursor-pointer"
-                                    >
-                                        Continue <FaArrowRight className="text-[10px]" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })()}
 
             <div className="max-w-4xl mx-auto px-4 py-8">
                 {(() => {
