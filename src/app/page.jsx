@@ -372,17 +372,17 @@ export default function HomePage() {
 
             <div className="relative z-10 min-h-screen flex flex-col">
                 {/* Header */}
-                <header className="py-6 px-8">
+                <header className="py-4 px-4 sm:py-6 sm:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="flex items-center justify-between max-w-7xl mx-auto"
                     >
                         <Logo size="default" />
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 sm:gap-4">
                             <button
                                 onClick={() => setShowDemoVideo(true)}
-                                className="relative px-4 py-2.5 bg-red-500 text-white rounded-xl font-semibold text-sm hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transition-all cursor-pointer transform hover:-translate-y-0.5 flex items-center gap-2"
+                                className="relative px-3 py-2 sm:px-4 sm:py-2.5 bg-red-500 text-white rounded-xl font-semibold text-xs sm:text-sm hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transition-all cursor-pointer transform hover:-translate-y-0.5 flex items-center gap-1.5 sm:gap-2"
                             >
                                 {/* Pulsing glow ring */}
                                 <span className="absolute -inset-1 rounded-2xl bg-red-400 opacity-0 animate-pulse" style={{ animationDuration: '2s' }}></span>
@@ -392,15 +392,15 @@ export default function HomePage() {
                                     <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-400 border border-white"></span>
                                 </span>
                                 <FaVideo className="relative z-10 text-xs" />
-                                <span className="relative z-10">Exam Instruction</span>
+                                <span className="relative z-10 hidden sm:inline">Exam Instruction</span>
                             </button>
-                            <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+                            <div className="hidden md:flex items-center gap-2 text-slate-500 text-sm font-medium">
                                 <LuShieldCheck className="text-emerald-500" />
-                                <span className="hidden sm:inline">Secure Platform</span>
+                                <span>Secure Platform</span>
                             </div>
                             <button
                                 onClick={() => router.push("/login")}
-                                className="px-5 py-2.5 bg-[#FF6904] text-white rounded-xl font-semibold text-sm hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer transform hover:-translate-y-0.5"
+                                className="px-4 py-2 sm:px-5 sm:py-2.5 bg-[#FF6904] text-white rounded-xl font-semibold text-xs sm:text-sm hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer transform hover:-translate-y-0.5"
                             >
                                 Login
                             </button>
@@ -409,8 +409,8 @@ export default function HomePage() {
                 </header>
 
                 {/* Main Content */}
-                <main className="flex-1 flex items-center justify-center px-4 py-8">
-                    <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <main className="flex-1 flex items-center justify-center px-4 py-6 sm:py-8">
+                    <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                         {/* Left - Info Section */}
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
@@ -485,18 +485,18 @@ export default function HomePage() {
                             transition={{ delay: 0.1 }}
                             className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto"
                         >
-                            <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 shadow-xl shadow-slate-200/50">
+                            <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-[2.5rem] p-6 sm:p-10 shadow-xl shadow-slate-200/50">
                                 {/* Card Header */}
-                                <div className="text-center mb-8">
-                                    <div className="w-16 h-16 mx-auto mb-4 bg-[#FF6904]/10 border border-[#FF6904]/20 rounded-2xl flex items-center justify-center shadow-sm">
-                                        <HiOutlineDocumentText className="text-[#FF6904] text-3xl" />
+                                <div className="text-center mb-6 sm:mb-8">
+                                    <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-[#FF6904]/10 border border-[#FF6904]/20 rounded-2xl flex items-center justify-center shadow-sm">
+                                        <HiOutlineDocumentText className="text-[#FF6904] text-2xl sm:text-3xl" />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-slate-900 outfit">Start Your Exam</h3>
-                                    <p className="text-slate-500 text-sm mt-2 font-medium">Enter your unique Exam ID to begin</p>
+                                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 outfit">Start Your Exam</h3>
+                                    <p className="text-slate-500 text-sm mt-1.5 sm:mt-2 font-medium">Enter your unique Exam ID to begin</p>
                                 </div>
 
                                 {/* Form */}
-                                <form onSubmit={handleStartExam} className="space-y-6">
+                                <form onSubmit={handleStartExam} className="space-y-5 sm:space-y-6">
                                     <div>
                                         <label className="block text-slate-700 text-sm mb-2 font-semibold">Exam ID</label>
                                         <div className="relative">
@@ -508,7 +508,7 @@ export default function HomePage() {
                                                     setExamId(e.target.value.toUpperCase());
                                                 }}
                                                 placeholder="e.g., JEIELTS240001"
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-4 text-slate-900 placeholder-slate-400 focus:border-[#FF6904] focus:bg-white focus:ring-4 focus:ring-[#FF6904]/10 outline-none transition-all text-lg font-mono tracking-widest"
+                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-12 pr-4 py-3.5 sm:py-4 text-slate-900 placeholder-slate-400 focus:border-[#FF6904] focus:bg-white focus:ring-4 focus:ring-[#FF6904]/10 outline-none transition-all text-base sm:text-lg font-mono tracking-wider sm:tracking-widest"
                                                 autoComplete="off"
                                                 spellCheck="false"
                                             />
@@ -539,7 +539,7 @@ export default function HomePage() {
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full flex items-center justify-center gap-3 bg-[#FF6904] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0"
+                                        className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-[#FF6904] text-white py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-[#e85d00] hover:shadow-lg hover:shadow-[#FF6904]/30 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed transform hover:-translate-y-0.5 active:translate-y-0"
                                     >
                                         {isLoading ? (
                                             <>
@@ -557,7 +557,7 @@ export default function HomePage() {
                                 </form>
 
                                 {/* Security Note */}
-                                <div className="mt-8 pt-8 border-t border-slate-100">
+                                <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-slate-100">
                                     <div className="flex items-start gap-3 text-slate-500 text-xs leading-relaxed">
                                         <FaShieldAlt className="text-[#FF6904] mt-0.5 flex-shrink-0" />
                                         <p>
@@ -571,8 +571,8 @@ export default function HomePage() {
                 </main>
 
                 {/* Footer */}
-                <footer className="py-8 px-8 border-t border-slate-200 bg-white/50 backdrop-blur-sm">
-                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-600 text-sm font-medium">
+                <footer className="py-6 px-4 sm:py-8 sm:px-8 border-t border-slate-200 bg-white/50 backdrop-blur-sm">
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 text-slate-600 text-xs sm:text-sm font-medium text-center md:text-left">
                         <p>© 2026 Jibon Education. All rights reserved.</p>
                         <div className="flex items-center gap-6">
                             <span className="hover:text-[#FF6904] cursor-pointer transition-colors">Privacy Policy</span>
