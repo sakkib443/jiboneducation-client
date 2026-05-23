@@ -524,10 +524,9 @@ const ScoreEditModal = ({ show, onClose, student, onSave, saving, editModule, ed
         }
     }, [student, editModule, editSetNumber]);
 
-    // Calculate overall band
+    // Calculate overall band (includes Speaking when provided)
     const calculateOverall = () => {
-        // Filter out Speaking if it's 0 or not yet provided, to calculate average of 3 modules
-        const bands = [scores.listening.band, scores.reading.band, scores.writing.overallBand].filter(b => b > 0);
+        const bands = [scores.listening.band, scores.reading.band, scores.writing.overallBand, scores.speaking.band].filter(b => b > 0);
         if (bands.length === 0) return 0;
         const sum = bands.reduce((a, b) => a + b, 0);
         return Math.round((sum / bands.length) * 2) / 2;
@@ -677,8 +676,8 @@ const ScoreEditModal = ({ show, onClose, student, onSave, saving, editModule, ed
                         </div>
                     )}
 
-                    {/* Speaking Section - Hidden for now */}
-                    {false && (!editModule || editModule === 'speaking') && (
+                    {/* Speaking Section - admin manual score */}
+                    {(!editModule || editModule === 'speaking') && (
                         <div className="bg-orange-50 rounded-2xl p-5 border border-orange-100">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 rounded-xl bg-orange-500 text-white flex items-center justify-center">
@@ -988,6 +987,7 @@ function StudentContent() {
                     listening: { title: 'Listening', icon: FaHeadphones, color: 'blue' },
                     reading: { title: 'Reading', icon: FaBook, color: 'green' },
                     writing: { title: 'Writing', icon: FaPen, color: 'purple' },
+                    speaking: { title: 'Speaking', icon: FaMicrophone, color: 'orange' },
                 };
                 const scoresObj = student.scores || {};
                 const assignedSets = student.assignedSets || {};
@@ -1007,6 +1007,10 @@ function StudentContent() {
 
                 // Helper: get per-set score for a module
                 const getModuleScore = (moduleId, setNum) => {
+                    if (moduleId === 'speaking') {
+                        const src = scoresObj.speaking || {};
+                        return { band: src.band || 0, subInfo: 'Manual score' };
+                    }
                     const setKey = `${moduleId}_${setNum}`;
                     const perSet = scoresObj[setKey] || null;
                     if (moduleId === 'writing') {
@@ -1030,7 +1034,8 @@ function StudentContent() {
                     return (
                         <div key={`${moduleId}-${setNum}`} className={`relative p-5 rounded-md border ${mod.color === 'blue' ? 'bg-blue-50 border-blue-100 hover:border-blue-200' :
                             mod.color === 'green' ? 'bg-emerald-50 border-emerald-100 hover:border-emerald-200' :
-                                'bg-violet-50 border-violet-100 hover:border-violet-200'
+                                mod.color === 'orange' ? 'bg-orange-50 border-orange-100 hover:border-orange-200' :
+                                    'bg-violet-50 border-violet-100 hover:border-violet-200'
                             } transition-all`}>
                             {isCompleted && (
                                 <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
@@ -1039,7 +1044,8 @@ function StudentContent() {
                             )}
                             <div className="flex items-start gap-3 mb-3">
                                 <div className={`w-10 h-10 rounded-md flex items-center justify-center ${mod.color === 'blue' ? 'bg-blue-500 text-white' :
-                                    mod.color === 'green' ? 'bg-emerald-500 text-white' : 'bg-violet-500 text-white'}`}>
+                                    mod.color === 'green' ? 'bg-emerald-500 text-white' :
+                                        mod.color === 'orange' ? 'bg-orange-500 text-white' : 'bg-violet-500 text-white'}`}>
                                     <mod.icon className="text-base" />
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -1049,10 +1055,12 @@ function StudentContent() {
                                 <BandScoreCircle score={band} size="small" />
                             </div>
                             <div className="flex gap-1.5">
-                                <button onClick={() => handleViewAnswers(moduleId)}
-                                    className="flex-1 h-8 flex items-center justify-center gap-1 bg-white border border-slate-200 text-slate-600 rounded-md text-xs font-medium hover:bg-slate-50 transition-all cursor-pointer">
-                                    <FaEye className="text-slate-400 text-[10px]" /> View
-                                </button>
+                                {moduleId !== 'speaking' && (
+                                    <button onClick={() => handleViewAnswers(moduleId)}
+                                        className="flex-1 h-8 flex items-center justify-center gap-1 bg-white border border-slate-200 text-slate-600 rounded-md text-xs font-medium hover:bg-slate-50 transition-all cursor-pointer">
+                                        <FaEye className="text-slate-400 text-[10px]" /> View
+                                    </button>
+                                )}
                                 <button onClick={() => setEditModal({ show: true, module: moduleId, setNumber: setNum })}
                                     className="flex-1 h-8 flex items-center justify-center gap-1 bg-slate-800 text-white rounded-md text-xs font-medium hover:bg-slate-900 transition-all cursor-pointer">
                                     <FaEdit className="text-[10px]" /> Edit
@@ -1075,7 +1083,8 @@ function StudentContent() {
                     const l = getModuleScore('listening', fs.listeningSetNumber).band;
                     const r = getModuleScore('reading', fs.readingSetNumber).band;
                     const w = getModuleScore('writing', fs.writingSetNumber).band;
-                    const bands = [l, r, w].filter(b => b > 0);
+                    const s = scoresObj.speaking?.band || 0;
+                    const bands = [l, r, w, s].filter(b => b > 0);
                     if (bands.length === 0) return 0;
                     const avg = bands.reduce((a, b) => a + b, 0) / bands.length;
                     return Math.round(avg * 2) / 2;
@@ -1102,6 +1111,7 @@ function StudentContent() {
                                         {fs.listeningSetNumber && renderCard('listening', fs.listeningSetNumber, 'Listening')}
                                         {fs.readingSetNumber && renderCard('reading', fs.readingSetNumber, 'Reading')}
                                         {fs.writingSetNumber && renderCard('writing', fs.writingSetNumber, 'Writing')}
+                                        {idx === 0 && renderCard('speaking', null, 'Speaking')}
                                     </div>
                                 </div>
                             );
