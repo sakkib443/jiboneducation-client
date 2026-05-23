@@ -1052,6 +1052,13 @@ function ListeningExamPageContent() {
                     </div>
                     {/* Right: WiFi + Bell + Menu icons */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                        {/* Exam Timer */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', border: `1px solid ${contrastMode === 'black-on-white' ? '#d1d5db' : cs.text}`, borderRadius: '6px' }}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={contrastMode === 'black-on-white' ? '#374151' : cs.text} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15 14" />
+                            </svg>
+                            <span style={{ fontFamily: 'monospace', fontSize: '16px', fontWeight: '700', color: cs.text, minWidth: '52px', textAlign: 'center' }}>{formatTime(timeLeft)}</span>
+                        </div>
                         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={contrastMode === 'black-on-white' ? '#374151' : cs.text} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M5 12.55a11 11 0 0 1 14.08 0" />
                             <path d="M1.42 9a16 16 0 0 1 21.16 0" />
