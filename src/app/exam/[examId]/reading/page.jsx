@@ -1083,7 +1083,9 @@ function ReadingExamPageContent() {
                                                         <span style={{ flex: 1, color: cs.text, fontSize: '15px' }}>{item.text}</span>
                                                         <select value={answers[item.questionNumber] || ""} onChange={e => handleAnswer(item.questionNumber, e.target.value)} style={{ border: `1px solid ${cs.text}`, padding: '4px 8px', fontSize: '14px', background: cs.bg, color: cs.text, cursor: 'pointer', width: '70px', textAlign: 'center', borderRadius: '2px' }}>
                                                             <option value="">--</option>
-                                                            {group.paragraphOptions?.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                                            {group.paragraphOptions?.length
+                                                                ? group.paragraphOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)
+                                                                : group.featureOptions?.map(opt => <option key={opt.letter} value={opt.letter}>{opt.letter}</option>)}
                                                         </select>
                                                     </div>
                                                 ))}

@@ -26,7 +26,7 @@ export default function ListeningListPage() {
     const router = useRouter();
     const [tests, setTests] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, totalPages: 0 });
+    const [pagination, setPagination] = useState({ page: 1, limit: 20, total: 0, totalPages: 0 });
     const [searchTerm, setSearchTerm] = useState("");
     const [difficultyFilter, setDifficultyFilter] = useState("");
     const [testTypeFilter, setTestTypeFilter] = useState("");
@@ -189,7 +189,7 @@ export default function ListeningListPage() {
                     }}
                     className="px-3 py-2.5 border border-gray-200 rounded-md outline-none focus:border-indigo-500 text-sm"
                 >
-                    <option value="">Sort By...</option>
+                    <option value="">Active First (Name A-Z)</option>
                     <option value="newest">Newest First</option>
                     <option value="oldest">Oldest First</option>
                     <option value="name_asc">Name (A-Z)</option>
