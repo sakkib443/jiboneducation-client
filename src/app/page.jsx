@@ -100,7 +100,7 @@ export default function HomePage() {
         "text.hero_subtitle",
     ];
     const SC_DEFAULTS = {
-        "video.home_welcome": { videoSource: "local", videoUrl: "/video/IELTS on computer - Quick Guide.mp4" },
+        "video.home_welcome": { videoSource: "local", videoUrl: "" },
         "text.hero_badge": { textValue: "100% AUTHENTIC EXAM EXPERIENCE" },
         "text.hero_title_line1": { textValue: "Jibon Education" },
         "text.hero_title_line2": { textValue: "Online IELTS Mock Tests" },
@@ -119,7 +119,7 @@ export default function HomePage() {
     const heroSubtitleRaw = siteContent["text.hero_subtitle"]?.textValue || SC_DEFAULTS["text.hero_subtitle"].textValue;
 
     const homeVideoEntry = siteContent["video.home_welcome"];
-    const homeVideoSrc = getVideoSrc(homeVideoEntry, "/video/IELTS on computer - Quick Guide.mp4");
+    const homeVideoSrc = getVideoSrc(homeVideoEntry);
     const homeVideoIsYT = isYouTube(homeVideoEntry);
     const [isLoading, setIsLoading] = useState(false);
     const [agreed, setAgreed] = useState(false);

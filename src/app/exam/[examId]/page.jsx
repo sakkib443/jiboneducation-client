@@ -48,11 +48,12 @@ export default function ExamSelectionPage() {
         "video.reading_intro",
         "video.writing_intro",
     ];
+    // Local instruction videos removed — videos are now set via Admin > Design > Videos.
     const VIDEO_DEFAULTS = {
-        "video.exam_intro": { videoSource: "local", videoUrl: "/video/IELTS on computer - Quick Guide.mp4" },
-        "video.listening_intro": { videoSource: "local", videoUrl: "/video/listeining test instruction.mp4" },
-        "video.reading_intro": { videoSource: "local", videoUrl: "/video/reading instruction.mp4" },
-        "video.writing_intro": { videoSource: "local", videoUrl: "/video/writing instruction.mp4" },
+        "video.exam_intro": { videoSource: "local", videoUrl: "" },
+        "video.listening_intro": { videoSource: "local", videoUrl: "" },
+        "video.reading_intro": { videoSource: "local", videoUrl: "" },
+        "video.writing_intro": { videoSource: "local", videoUrl: "" },
     };
     const { data: dynamicVideos } = useSiteContent(VIDEO_KEYS, VIDEO_DEFAULTS);
 
@@ -163,25 +164,25 @@ export default function ExamSelectionPage() {
     };
 
     const examIntroEntry = dynamicVideos["video.exam_intro"];
-    const examIntroSrc = getVideoSrc(examIntroEntry, "/video/IELTS on computer - Quick Guide.mp4");
+    const examIntroSrc = getVideoSrc(examIntroEntry);
     const examIntroIsYT = isYouTube(examIntroEntry);
 
     const MODULE_VIDEOS = {
         listening: {
             entry: dynamicVideos["video.listening_intro"],
-            src: getVideoSrc(dynamicVideos["video.listening_intro"], "/video/listeining test instruction.mp4"),
+            src: getVideoSrc(dynamicVideos["video.listening_intro"]),
             isYT: isYouTube(dynamicVideos["video.listening_intro"]),
             label: "Listening",
         },
         reading: {
             entry: dynamicVideos["video.reading_intro"],
-            src: getVideoSrc(dynamicVideos["video.reading_intro"], "/video/reading instruction.mp4"),
+            src: getVideoSrc(dynamicVideos["video.reading_intro"]),
             isYT: isYouTube(dynamicVideos["video.reading_intro"]),
             label: "Reading",
         },
         writing: {
             entry: dynamicVideos["video.writing_intro"],
-            src: getVideoSrc(dynamicVideos["video.writing_intro"], "/video/writing instruction.mp4"),
+            src: getVideoSrc(dynamicVideos["video.writing_intro"]),
             isYT: isYouTube(dynamicVideos["video.writing_intro"]),
             label: "Writing",
         },
