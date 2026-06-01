@@ -242,9 +242,18 @@ export default function StudentResults() {
                     icon: "✍️",
                     color: [236, 72, 153], // Pink
                 },
+                ...(scores?.speaking?.band > 0
+                    ? [{
+                        name: "Speaking",
+                        band: scores.speaking.band,
+                        manual: true,
+                        icon: "🎤",
+                        color: [249, 115, 22], // Orange
+                    }]
+                    : []),
             ];
 
-            const cardWidth = (contentWidth - 10) / 3;
+            const cardWidth = (contentWidth - 5 * (modules.length - 1)) / modules.length;
 
             modules.forEach((mod, index) => {
                 const x = margin + index * (cardWidth + 5);
@@ -294,6 +303,11 @@ export default function StudentResults() {
                     doc.setFontSize(7);
                     doc.setTextColor(...gray);
                     const detail = `T1: ${mod.task1 || "—"} | T2: ${mod.task2 || "—"}`;
+                    doc.text(detail, x + cardWidth / 2 - doc.getTextWidth(detail) / 2, y + 46);
+                } else if (mod.manual) {
+                    doc.setFontSize(7);
+                    doc.setTextColor(...gray);
+                    const detail = "Examiner assessed";
                     doc.text(detail, x + cardWidth / 2 - doc.getTextWidth(detail) / 2, y + 46);
                 }
             });
@@ -346,6 +360,15 @@ export default function StudentResults() {
                     total: null,
                     extra: `Task 1: ${scores?.writing?.task1Band || "—"} / Task 2: ${scores?.writing?.task2Band || "—"}`,
                 },
+                ...(scores?.speaking?.band > 0
+                    ? [{
+                        name: "Speaking",
+                        band: scores.speaking.band,
+                        raw: null,
+                        total: null,
+                        extra: "Examiner assessed (live test)",
+                    }]
+                    : []),
             ];
 
             rows.forEach((row, i) => {
@@ -634,6 +657,20 @@ export default function StudentResults() {
                         );
                     })}
 
+                    {/* Speaking — examiner-graded (manual, not part of the online sets) */}
+                    {scores?.speaking?.band > 0 && (
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                <h3 className="text-sm font-bold text-gray-700">Speaking</h3>
+                                <div className="h-px flex-1 bg-gray-200"></div>
+                            </div>
+                            <div className="grid md:grid-cols-3 gap-4 mb-4">
+                                <ScoreCard title="Speaking" icon={FaMicrophone} band={scores.speaking.band} manual />
+                            </div>
+                        </div>
+                    )}
+
                     {/* Extra Parts Results */}
                     {extraSetsResult.length > 0 && (
                         <div>
@@ -783,7 +820,7 @@ export default function StudentResults() {
     );
 }
 
-const ScoreCard = ({ title, icon: Icon, band, raw, total, task1, task2, examinerGraded }) => (
+const ScoreCard = ({ title, icon: Icon, band, raw, total, task1, task2, manual, examinerGraded }) => (
     <div className="bg-white border border-gray-200 rounded-md p-5">
         <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2.5">
@@ -813,6 +850,10 @@ const ScoreCard = ({ title, icon: Icon, band, raw, total, task1, task2, examiner
                         style={{ width: `${(raw / total) * 100}%` }}
                     />
                 </div>
+            </div>
+        ) : manual ? (
+            <div className="text-center py-1.5">
+                <p className="text-xs text-gray-400">Examiner assessed — live speaking test</p>
             </div>
         ) : (
             <div className="grid grid-cols-2 gap-2">
