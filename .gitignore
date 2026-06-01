@@ -42,3 +42,9 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# Large local-only media (already uploaded to DB / Vercel Blob) — keep locally, never commit.
+# NOTE: public/video stays tracked because the app serves it from /video/*.mp4.
+/public/mock/
+/public/new mock/
+/public/New folder/
