@@ -477,10 +477,18 @@ export default function ExamSelectionPage() {
                                 writing: { name: 'Writing', duration: 60, questions: 2, details: 'Task 1 & 2' },
                             };
 
-                            // Build Full Sets
+                            const extraSets = assignedSets.extraSets || [];
+
+                            // Build Full Sets.
+                            // NOTE: Only fall back to the legacy single-set fields when there are
+                            // NO extra sets. An "extra only" assignment (e.g. one extra Reading)
+                            // also leaks its set number into the legacy readingSetNumber field on
+                            // the backend — without this guard that would synthesize a phantom
+                            // "Full Set 1", making the same exam appear twice (once at the top
+                            // under Full Set 1, once under Extra Exams).
                             const fullSets = assignedSets.fullSets && assignedSets.fullSets.length > 0
                                 ? assignedSets.fullSets
-                                : (assignedSets.listeningSetNumber || assignedSets.readingSetNumber || assignedSets.writingSetNumber)
+                                : (extraSets.length === 0 && (assignedSets.listeningSetNumber || assignedSets.readingSetNumber || assignedSets.writingSetNumber))
                                     ? [{
                                         label: "Full Set 1",
                                         listeningSetNumber: assignedSets.listeningSetNumber,
@@ -488,7 +496,6 @@ export default function ExamSelectionPage() {
                                         writingSetNumber: assignedSets.writingSetNumber,
                                     }]
                                     : [];
-                            const extraSets = assignedSets.extraSets || [];
 
                             // Helper: is module:set completed
                             const isSetDone = (moduleId, setNum) => {
