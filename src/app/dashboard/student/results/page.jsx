@@ -77,40 +77,49 @@ export default function StudentResults() {
             const green = [16, 185, 129];        // Emerald
             const gold = [234, 179, 8];          // Yellow-500
 
-            // ====== HEADER BAND ======
-            doc.setFillColor(...primary);
-            doc.rect(0, 0, pageWidth, 52, "F");
+            // ====== HEADER (logo + report meta) ======
+            const loadImageDataURL = (url) =>
+                new Promise((resolve, reject) => {
+                    fetch(url)
+                        .then((res) => res.blob())
+                        .then((blob) => {
+                            const reader = new FileReader();
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.onerror = reject;
+                            reader.readAsDataURL(blob);
+                        })
+                        .catch(reject);
+                });
 
-            // Subtle gradient overlay
-            doc.setFillColor(...primaryLight);
-            doc.setGState(new doc.GState({ opacity: 0.15 }));
-            doc.circle(pageWidth - 20, -10, 50, "F");
-            doc.circle(30, 60, 30, "F");
-            doc.setGState(new doc.GState({ opacity: 1 }));
+            let logoDataUrl = null;
+            try {
+                logoDataUrl = await loadImageDataURL("/images/logo.png");
+            } catch (e) {
+                logoDataUrl = null;
+            }
 
-            // Header Text
+            const logoH = 13;
+            const logoW = logoH * 2.943; // preserve logo aspect ratio (830x282)
+            if (logoDataUrl) {
+                doc.addImage(logoDataUrl, "PNG", margin, 13, logoW, logoH);
+            } else {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.setTextColor(...primary);
+                doc.text("JIBON EDUCATION", margin, 23);
+            }
+
+            // Report meta (right aligned)
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
-            doc.setTextColor(...white);
-            doc.text("IELTS EXAM RESULT", margin, 22);
+            doc.setFontSize(10);
+            doc.setTextColor(...primary);
+            doc.text("OFFICIAL SCORE REPORT", pageWidth - margin, 16, { align: "right" });
 
             doc.setFont("helvetica", "normal");
-            doc.setFontSize(10);
-            doc.setTextColor(200, 230, 235);
-            doc.text("Jibon Education — Official Score Report", margin, 32);
+            doc.setFontSize(8.5);
+            doc.setTextColor(...gray);
+            doc.text(`Exam ID: ${examId}`, pageWidth - margin, 22, { align: "right" });
 
-            // Exam ID badge (right side)
-            const badgeText = `Exam ID: ${examId}`;
-            const badgeWidth = doc.getTextWidth(badgeText) + 12;
-            doc.setFillColor(255, 255, 255);
-            doc.setGState(new doc.GState({ opacity: 0.2 }));
-            doc.roundedRect(pageWidth - margin - badgeWidth, 14, badgeWidth, 10, 2, 2, "F");
-            doc.setGState(new doc.GState({ opacity: 1 }));
-            doc.setFontSize(9);
-            doc.setTextColor(...white);
-            doc.text(badgeText, pageWidth - margin - badgeWidth + 6, 20.5);
-
-            // Date
             const dateStr = examDate
                 ? new Date(examDate).toLocaleDateString("en-GB", {
                     day: "numeric",
@@ -118,11 +127,14 @@ export default function StudentResults() {
                     year: "numeric",
                 })
                 : "N/A";
-            doc.setFontSize(8);
-            doc.setTextColor(200, 230, 235);
-            doc.text(`Date: ${dateStr}`, pageWidth - margin - badgeWidth + 6, 28);
+            doc.text(`Exam Date: ${dateStr}`, pageWidth - margin, 27, { align: "right" });
 
-            let y = 64;
+            // Header divider
+            doc.setDrawColor(...primary);
+            doc.setLineWidth(0.8);
+            doc.line(margin, 32, pageWidth - margin, 32);
+
+            let y = 42;
 
             // ====== CANDIDATE INFO ======
             doc.setFillColor(...lightGray);
@@ -138,18 +150,20 @@ export default function StudentResults() {
             doc.setTextColor(...dark);
             doc.text(nameEnglish, margin + 8, y + 14);
 
-            // Verified badge
+            // Verified badge (drawn checkmark — no glyph font dependency)
+            const vcx = pageWidth - margin - 26;
+            const vcy = y + 9;
             doc.setFillColor(...green);
-            doc.circle(pageWidth - margin - 12, y + 9, 4, "F");
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(7);
-            doc.setTextColor(...white);
-            doc.text("✓", pageWidth - margin - 13.5, y + 11);
+            doc.circle(vcx, vcy, 2.6, "F");
+            doc.setDrawColor(...white);
+            doc.setLineWidth(0.6);
+            doc.line(vcx - 1.1, vcy + 0.1, vcx - 0.2, vcy + 1.1);
+            doc.line(vcx - 0.2, vcy + 1.1, vcx + 1.2, vcy - 1.2);
 
-            doc.setFont("helvetica", "normal");
+            doc.setFont("helvetica", "bold");
             doc.setFontSize(8);
             doc.setTextColor(...green);
-            doc.text("Verified", pageWidth - margin - 6, y + 10.5);
+            doc.text("VERIFIED", pageWidth - margin - 8, vcy + 1.2, { align: "right" });
 
             y += 28;
 
@@ -193,14 +207,11 @@ export default function StudentResults() {
             const bandLabel = getBandLabel(overallBand);
             doc.text(bandLabel, pageWidth - margin - doc.getTextWidth(bandLabel) - 12, y + 22);
 
-            // Gold star icon area
+            // Subtle accent dot (gold)
             doc.setFillColor(...gold);
-            doc.setGState(new doc.GState({ opacity: 0.3 }));
-            doc.circle(pageWidth - margin - 12, y + 10, 5, "F");
+            doc.setGState(new doc.GState({ opacity: 0.25 }));
+            doc.circle(pageWidth - margin - 10, y + 10, 4, "F");
             doc.setGState(new doc.GState({ opacity: 1 }));
-            doc.setFontSize(9);
-            doc.setTextColor(...gold);
-            doc.text("★", pageWidth - margin - 14, y + 12);
 
             y += 48;
 
@@ -223,7 +234,7 @@ export default function StudentResults() {
                     band: scores?.listening?.band || 0,
                     raw: scores?.listening?.raw,
                     total: scores?.listening?.totalQuestions || 40,
-                    icon: "🎧",
+                    letter: "L",
                     color: [59, 130, 246], // Blue
                 },
                 {
@@ -231,7 +242,7 @@ export default function StudentResults() {
                     band: scores?.reading?.band || 0,
                     raw: scores?.reading?.raw,
                     total: scores?.reading?.totalQuestions || 40,
-                    icon: "📖",
+                    letter: "R",
                     color: [139, 92, 246], // Purple
                 },
                 {
@@ -239,7 +250,7 @@ export default function StudentResults() {
                     band: scores?.writing?.overallBand || 0,
                     task1: scores?.writing?.task1Band,
                     task2: scores?.writing?.task2Band,
-                    icon: "✍️",
+                    letter: "W",
                     color: [236, 72, 153], // Pink
                 },
                 ...(scores?.speaking?.band > 0
@@ -247,20 +258,22 @@ export default function StudentResults() {
                         name: "Speaking",
                         band: scores.speaking.band,
                         manual: true,
-                        icon: "🎤",
+                        letter: "S",
                         color: [249, 115, 22], // Orange
                     }]
                     : []),
             ];
 
-            const cardWidth = (contentWidth - 5 * (modules.length - 1)) / modules.length;
+            const gap = 5;
+            const cardWidth = (contentWidth - gap * (modules.length - 1)) / modules.length;
 
             modules.forEach((mod, index) => {
-                const x = margin + index * (cardWidth + 5);
+                const x = margin + index * (cardWidth + gap);
 
                 // Card background
                 doc.setFillColor(...white);
                 doc.setDrawColor(226, 232, 240);
+                doc.setLineWidth(0.3);
                 doc.roundedRect(x, y, cardWidth, 52, 3, 3, "FD");
 
                 // Color accent line at top
@@ -269,46 +282,45 @@ export default function StudentResults() {
                 doc.setFillColor(...white);
                 doc.rect(x, y + 1.5, cardWidth, 1.5, "F");
 
-                // Icon
-                doc.setFontSize(14);
-                doc.text(mod.icon, x + 5, y + 13);
+                // Icon chip (colored square with white letter)
+                doc.setFillColor(...mod.color);
+                doc.roundedRect(x + 5, y + 8, 7, 7, 1.5, 1.5, "F");
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(8);
+                doc.setTextColor(...white);
+                doc.text(mod.letter, x + 8.5, y + 12.9, { align: "center" });
 
                 // Module name
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(9);
+                doc.setFontSize(9.5);
                 doc.setTextColor(...dark);
-                doc.text(mod.name, x + 14, y + 12);
+                doc.text(mod.name, x + 15, y + 13);
 
                 // Band score (large)
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(22);
                 doc.setTextColor(...mod.color);
-                const bandText = mod.band.toFixed(1);
-                doc.text(bandText, x + cardWidth / 2 - doc.getTextWidth(bandText) / 2, y + 32);
+                doc.text(mod.band.toFixed(1), x + cardWidth / 2, y + 33, { align: "center" });
 
                 // Label
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(7);
                 doc.setTextColor(...gray);
-                const label = "BAND SCORE";
-                doc.text(label, x + cardWidth / 2 - doc.getTextWidth(label) / 2, y + 37);
+                doc.text("BAND SCORE", x + cardWidth / 2, y + 38, { align: "center" });
 
                 // Details
-                if (mod.raw !== undefined) {
-                    doc.setFontSize(7);
-                    doc.setTextColor(...gray);
-                    const detail = `${mod.raw}/${mod.total} correct`;
-                    doc.text(detail, x + cardWidth / 2 - doc.getTextWidth(detail) / 2, y + 46);
+                let detail = "";
+                if (mod.raw !== undefined && mod.raw !== null) {
+                    detail = `${mod.raw}/${mod.total} correct`;
                 } else if (mod.task1 !== undefined) {
-                    doc.setFontSize(7);
-                    doc.setTextColor(...gray);
-                    const detail = `T1: ${mod.task1 || "—"} | T2: ${mod.task2 || "—"}`;
-                    doc.text(detail, x + cardWidth / 2 - doc.getTextWidth(detail) / 2, y + 46);
+                    detail = `T1: ${mod.task1 || "-"}   T2: ${mod.task2 || "-"}`;
                 } else if (mod.manual) {
+                    detail = "Examiner assessed";
+                }
+                if (detail) {
                     doc.setFontSize(7);
                     doc.setTextColor(...gray);
-                    const detail = "Examiner assessed";
-                    doc.text(detail, x + cardWidth / 2 - doc.getTextWidth(detail) / 2, y + 46);
+                    doc.text(detail, x + cardWidth / 2, y + 46, { align: "center" });
                 }
             });
 
@@ -358,7 +370,7 @@ export default function StudentResults() {
                     band: scores?.writing?.overallBand || 0,
                     raw: null,
                     total: null,
-                    extra: `Task 1: ${scores?.writing?.task1Band || "—"} / Task 2: ${scores?.writing?.task2Band || "—"}`,
+                    extra: `Task 1: ${scores?.writing?.task1Band || "-"}  /  Task 2: ${scores?.writing?.task2Band || "-"}`,
                 },
                 ...(scores?.speaking?.band > 0
                     ? [{
