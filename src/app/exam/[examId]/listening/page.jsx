@@ -17,6 +17,7 @@ import { listeningAPI, studentsAPI } from "@/lib/api";
 import { getPrefetched, fetchModuleData } from "@/lib/examPrefetch";
 import ExamLoadingOverlay from "@/components/ExamLoadingOverlay";
 import ExamSecurity from "@/components/ExamSecurity";
+import TextHighlighter from "@/components/TextHighlighter";
 
 const QUESTIONS_PER_PAGE = 10;
 
@@ -1110,7 +1111,8 @@ function ListeningExamPageContent() {
                         </div>
                     )}
 
-                    {/* ── Render groups ── */}
+                    {/* ── Render groups (wrapped in TextHighlighter for highlight + notes, same as Reading) ── */}
+                    <TextHighlighter passageId={`listening_section_${currentSectionIndex}`} contrastMode={contrastMode}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         {renderGroups.map((grp, gIdx) => {
 
@@ -1372,6 +1374,7 @@ function ListeningExamPageContent() {
                             return null;
                         })}
                     </div>
+                    </TextHighlighter>
                 </div>
 
                 {/* ══════════════════════════════════════
