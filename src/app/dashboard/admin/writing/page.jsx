@@ -32,6 +32,9 @@ export default function WritingListPage() {
     const [sortBy, setSortBy] = useState("");
     const [deleteConfirm, setDeleteConfirm] = useState(null);
     const [error, setError] = useState("");
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [bulkBusy, setBulkBusy] = useState(false);
+    const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
 
     const fetchTests = useCallback(async () => {
         setLoading(true);
@@ -53,6 +56,7 @@ export default function WritingListPage() {
                     total: response.data.pagination?.total || 0,
                     totalPages: response.data.pagination?.totalPages || 0,
                 }));
+                setSelectedIds([]);
             }
         } catch (err) {
             setError("Failed to fetch writing tests");
@@ -89,6 +93,33 @@ export default function WritingListPage() {
         } catch (err) {
             setError("Failed to toggle active status");
         }
+    };
+
+    const allSelected = tests.length > 0 && selectedIds.length === tests.length;
+    const toggleSelectAll = () => setSelectedIds(allSelected ? [] : tests.map(t => t._id));
+    const toggleSelect = (id) =>
+        setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+
+    const bulkSetActive = async (target) => {
+        setBulkBusy(true);
+        try {
+            const toChange = tests.filter(t => selectedIds.includes(t._id) && !!t.isActive !== target);
+            for (const t of toChange) { await writingAPI.toggleActive(t._id); }
+            setTests(prev => prev.map(t => selectedIds.includes(t._id) ? { ...t, isActive: target } : t));
+            setSelectedIds([]);
+        } catch (err) { setError("Failed to update some tests"); }
+        finally { setBulkBusy(false); }
+    };
+
+    const bulkDelete = async () => {
+        setBulkBusy(true);
+        try {
+            for (const id of selectedIds) { await writingAPI.delete(id); }
+            setTests(prev => prev.filter(t => !selectedIds.includes(t._id)));
+            setSelectedIds([]);
+            setBulkDeleteConfirm(false);
+        } catch (err) { setError("Failed to delete some tests"); }
+        finally { setBulkBusy(false); }
     };
 
     const getDifficultyBadge = (difficulty) => {
@@ -188,6 +219,20 @@ export default function WritingListPage() {
                 </div>
             )}
 
+            {/* Bulk action bar */}
+            {selectedIds.length > 0 && (
+                <div className="bg-green-50 border border-green-200 rounded-md px-4 py-3 mb-4 flex items-center justify-between flex-wrap gap-3">
+                    <span className="text-sm font-medium text-green-800">{selectedIds.length} selected</span>
+                    <div className="flex items-center gap-2">
+                        <button onClick={() => bulkSetActive(true)} disabled={bulkBusy} className="px-3 py-1.5 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"><FaToggleOn /> Activate</button>
+                        <button onClick={() => bulkSetActive(false)} disabled={bulkBusy} className="px-3 py-1.5 bg-gray-500 text-white rounded-md text-sm font-medium hover:bg-gray-600 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"><FaToggleOff /> Deactivate</button>
+                        <button onClick={() => setBulkDeleteConfirm(true)} disabled={bulkBusy} className="px-3 py-1.5 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"><FaTrash /> Delete</button>
+                        <button onClick={() => setSelectedIds([])} className="px-3 py-1.5 border border-gray-300 rounded-md text-sm cursor-pointer">Clear</button>
+                        {bulkBusy && <FaSpinner className="animate-spin text-green-600" />}
+                    </div>
+                </div>
+            )}
+
             {/* Table */}
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
@@ -212,6 +257,10 @@ export default function WritingListPage() {
                             <table className="w-full">
                                 <thead className="bg-gray-50 border-b border-gray-200">
                                     <tr>
+                                        <th className="px-3 py-3 w-10 text-center">
+                                            <input type="checkbox" checked={allSelected} onChange={toggleSelectAll} className="cursor-pointer" title="Select all" />
+                                        </th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 uppercase w-8">SL</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">#</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Type</th>
@@ -222,8 +271,14 @@ export default function WritingListPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {tests.map((test) => (
-                                        <tr key={test._id} className="hover:bg-gray-50 transition-colors">
+                                    {tests.map((test, index) => (
+                                        <tr key={test._id} className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(test._id) ? "bg-green-50/40" : ""}`}>
+                                            <td className="px-3 py-3 text-center">
+                                                <input type="checkbox" checked={selectedIds.includes(test._id)} onChange={() => toggleSelect(test._id)} className="cursor-pointer" />
+                                            </td>
+                                            <td className="px-2 py-3 text-xs text-gray-400">
+                                                {(pagination.page - 1) * pagination.limit + index + 1}
+                                            </td>
                                             <td className="px-4 py-3">
                                                 <span className="font-mono text-sm text-gray-600">#{test.testNumber}</span>
                                             </td>
@@ -337,6 +392,29 @@ export default function WritingListPage() {
                                 className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm"
                             >
                                 Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Bulk Delete Confirmation */}
+            {bulkDeleteConfirm && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-md p-6 w-full max-w-sm">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                <FaExclamationTriangle className="text-red-600" />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-gray-800">Delete {selectedIds.length} test{selectedIds.length !== 1 ? "s" : ""}?</h3>
+                                <p className="text-sm text-gray-500">This action cannot be undone.</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-3 justify-end">
+                            <button onClick={() => setBulkDeleteConfirm(false)} disabled={bulkBusy} className="px-4 py-2 border rounded-md text-sm cursor-pointer disabled:opacity-50">Cancel</button>
+                            <button onClick={bulkDelete} disabled={bulkBusy} className="px-4 py-2 bg-red-500 text-white rounded-md text-sm cursor-pointer disabled:opacity-50 flex items-center gap-1.5">
+                                {bulkBusy && <FaSpinner className="animate-spin" />} Delete
                             </button>
                         </div>
                     </div>
