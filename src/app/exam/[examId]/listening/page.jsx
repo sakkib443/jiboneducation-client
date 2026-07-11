@@ -170,7 +170,10 @@ function ListeningExamPageContent() {
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSoundTest, setShowSoundTest] = useState(!isAdminPreview);  // Skip sound test in admin preview
-    const [showPlayOverlay, setShowPlayOverlay] = useState(false);
+    // Admin preview skips the sound test, so it has no user gesture to unlock audio.
+    // Browsers block autoplay-with-sound without a gesture → admin hears nothing.
+    // Show the Play overlay in admin preview so the click starts the audio.
+    const [showPlayOverlay, setShowPlayOverlay] = useState(isAdminPreview);
     const [soundTestPlaying, setSoundTestPlaying] = useState(false);
     const [soundTestResult, setSoundTestResult] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
@@ -1004,7 +1007,18 @@ function ListeningExamPageContent() {
 
                         {/* Play Button */}
                         <button
-                            onClick={() => setShowPlayOverlay(false)}
+                            onClick={() => {
+                                // Start audio directly inside the click handler so the
+                                // browser treats it as a user gesture (avoids autoplay block).
+                                const audio = audioRef.current;
+                                if (audio && audioUrl) {
+                                    audio.src = audioUrl;
+                                    audio.load();
+                                    audio.play().then(() => setIsPlaying(true)).catch(err => console.log("Play failed:", err));
+                                    hasStarted.current = true;
+                                }
+                                setShowPlayOverlay(false);
+                            }}
                             style={{
                                 backgroundColor: 'black',
                                 color: 'white',
